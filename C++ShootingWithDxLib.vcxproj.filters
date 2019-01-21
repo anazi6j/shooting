@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{ecfb1d7b-7b00-43ce-8695-ecd85c0fcb1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{d39b5046-40b8-4599-99fc-3bec5e8f29af}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="C++ShootingWithDxLib.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\Ammo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\BarrierObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\BossObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\CharacterObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\Define.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\EnemyObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\GameObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\ItemBase.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\PlayableObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\UnitAdmin.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\Vector2D.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\HPRecoverObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Include\CannonItemObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix23.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="C++ShootingWithDxLib.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ammo.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BarrierObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BossObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CharacterObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnemyObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ItemBase.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayableObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UnitAdmin.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vector2D.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HPRecoverObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CannonObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix23.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C++ShootingWithDxLib.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="C++ShootingWithDxLib.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
