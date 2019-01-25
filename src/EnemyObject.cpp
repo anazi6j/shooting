@@ -1,12 +1,12 @@
 #include "Include\EnemyObject.h"
 #include "DxLib.h"
 #include "Include\Ammo.h"
-#include "Include\UnitAdmin.h"
+#include "Include\Admin.h"
 #include "Include\Define.h"
 #include <math.h>
 
 
-EnemyObject::EnemyObject(int m_unit_graphic_handle, int m_bullet_graphic_handle, UnitAdmin* m_Uadmin,EnemyType EType)
+EnemyObject::EnemyObject(int m_unit_graphic_handle, int m_bullet_graphic_handle, UnitAdmin* m_Uadmin,EnemyType EType,Tag m_tag)
 {
 	GraphicHandle = m_unit_graphic_handle;
 	unit_admin = m_Uadmin;
@@ -14,7 +14,7 @@ EnemyObject::EnemyObject(int m_unit_graphic_handle, int m_bullet_graphic_handle,
 	hitzone = HITDETECTIONZONE;
 	//“G‚©‚Ç‚¤‚©‚ðtrue‚É‚·‚é
 	isEnemy = true;
-
+	tag = m_tag;
 	
 	for (int i = 0; i < MAX_AMMO; i++)
 	{
@@ -116,6 +116,6 @@ void EnemyObject::Update()
 
 void EnemyObject::Death()
 {
-	unit_admin->EnemyCount--;
+	unit_admin->DecreaseEnemyCount();
 	
 }

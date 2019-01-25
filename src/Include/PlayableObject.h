@@ -21,7 +21,8 @@ public:
 	
 	//(プレイヤーの画像ハンドル,弾の画像ハンドル,キーポインタ）
 	PlayableObject() {};
-	 PlayableObject(int m_chara_graphic_handle, int m_ammo_graphic_handle, int m_barrier_graphic_handle, char m_input[256], UnitAdmin* m_Uadmin);
+	 PlayableObject(int m_chara_graphic_handle, int m_ammo_graphic_handle,
+		 int m_barrier_graphic_handle, char m_input[256], UnitAdmin* m_Uadmin,Tag tag);
 	~PlayableObject();
 	void Instantiate(double, double, double);
 	

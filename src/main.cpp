@@ -1,6 +1,6 @@
 #include "DxLib.h"
 #include "Include\UnitAdmin.h"
-
+using namespace std;
 int Process(char key[256])
 {
 	if (ScreenFlip() != 0)return false;//表画面と裏画面を入れ替える
@@ -24,41 +24,49 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 	SetWindowText("うじゃうじゃシューティング");//ウインドウタイトル
 	int bg1handle = LoadGraph("Image\\Title.png");
-
+	int bg2handle = LoadGraph("Image\\CLEAR.png");
 	int count = 0;
-	enum {
+	enum class STATUS {
 		TITLE,
 		GAME,
-		RESULT
-	}status = TITLE;//初期値をタイトルとして宣言する
+		RESULT,
+		CLEAR
+	}status = STATUS::TITLE;//初期値をタイトルとして宣言する
 
 	char key[256];
 
-	UnitAdmin* unit_admin = new UnitAdmin(key);
+	unique_ptr<UnitAdmin> unit_admin = make_unique<UnitAdmin>(key);
+
 	while (Process(key)) {//メインループ
 		switch (status)
 		{
-		case TITLE:
+		case STATUS::TITLE:
 			DrawGraph(0, 0, bg1handle, 0);
 			if (key[KEY_INPUT_Z] == 1) {
 				unit_admin->InitGame();
-				status = GAME;
+				status = STATUS::GAME;
 			}
 			break;
-		case GAME:
+		case STATUS::GAME:
 			unit_admin->Judge();
 			unit_admin->ItemJudge();
 			unit_admin->Update();
 			unit_admin->Draw();
 			unit_admin->DrawHitPoint();
 			if (unit_admin->GetGameoverFlag()) {
-				status = RESULT;
+				status = STATUS::RESULT;
+			}
+			if (unit_admin->GetGameClearFlag())
+			{
+				status = STATUS::CLEAR;
 			}
 			break;
-		case RESULT:
+		case STATUS::RESULT:
 			DrawFormatString(50, 50, GetColor(100, 100, 100), "%d", unit_admin->GetScore());
 			break;
-
+		case STATUS::CLEAR:
+				DrawGraph(0, 0, bg2handle, 0);
+				break;
 		}
 	}
 

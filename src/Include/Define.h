@@ -52,3 +52,6 @@ const double HIGHTENSION_ELAPSEDFRAME = 100;
 
 //‰ñ•œ—Ê
 const int HP_RECOVER = 100;
+
+//–C‘ä‚ÌŽ‹–ìŠp
+const double FOV = 100;

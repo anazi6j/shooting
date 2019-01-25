@@ -1,10 +1,11 @@
 #include "Include\PlayableObject.h"
 #include "DxLib.h"
 #include "Include\Ammo.h"
-#include "Include\UnitAdmin.h"
+#include "Include\Admin.h"
 #include "Include\BarrierObject.h"
 
-PlayableObject::PlayableObject(int m_chara_graphic_handle, int m_ammo_graphic_handle, int m_barrier_graphic_handle,char m_input[256], UnitAdmin* m_Uadmin)
+PlayableObject::PlayableObject(int m_chara_graphic_handle, int m_ammo_graphic_handle, 
+	int m_barrier_graphic_handle,char m_input[256], UnitAdmin* m_Uadmin,Tag m_tag)
 {
 	input = m_input;
 	GraphicHandle = m_chara_graphic_handle;
@@ -19,6 +20,7 @@ PlayableObject::PlayableObject(int m_chara_graphic_handle, int m_ammo_graphic_ha
 	}
 	barrier = new BarrierObject(m_barrier_graphic_handle);
 	health = 10000;
+	m_tag = tag;
 }
 
 
@@ -100,6 +102,7 @@ void PlayableObject::Update()
 		barrier->SetActive(true);
 		barrier->DrawObject();
 		barrier->SetBarrierPos(position.x, position.y);
+		Barrierisenabled = true;
 	}
 
 }

@@ -14,6 +14,17 @@ CharacterObject::CharacterObject()
 
 void CharacterObject::Hit(shared_ptr<Ammo> ammo)
 {
+	if (this->tag == Tag::Player) {
+		if (Barrierisenabled)
+		{
+			return;
+		}
+		else
+		{
+			health -= ammo->GetDamage();
+		}
+	}
+	
 	health -= ammo->GetDamage();
 	
 	//弾が当たったオブジェクトの列挙子を返す。

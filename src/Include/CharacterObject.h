@@ -9,6 +9,7 @@ class UnitAdmin;
 class Ammo;
 class CharacterObject:public GameObject
 {
+
 protected:
 	shared_ptr<Ammo> ammo[MAX_AMMO];
 	
@@ -17,14 +18,14 @@ protected:
 	int health;
 	int rapid;
 	int EnemyCount;
-
+	bool Barrierisenabled;
 	//
 public:
 	
 	CharacterObject();
 	virtual void Instantiate(double, double, double) = 0;
 	//弾に被弾した時の処理
-	void Hit(shared_ptr<Ammo>);//クラスを渡すので負荷を小さくするためにポインタ渡しする
+	void Hit(shared_ptr<Ammo>);//スマートポインタ渡しを使う。
 
 	shared_ptr<Ammo> GetAmmo(int i) { return ammo[i]; }
 	//EnemyObjectとPlayerObjectで実装を書く。ここでは書かない
