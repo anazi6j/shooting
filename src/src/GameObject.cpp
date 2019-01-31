@@ -15,10 +15,12 @@ GameObject::GameObject() :isActive(false)
 
 void GameObject::DrawObject()
 {
+	
 	if (isActive)
 	{
 		DrawRotaGraph(static_cast<int>(position.x), static_cast<int>(position.y), 1.0, Angle + PI / 2, GraphicHandle, 1, 0);
 	}
+	
 }
 
 

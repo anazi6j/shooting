@@ -82,7 +82,7 @@ public:
 	void DrawHitPoint();
 
 	//’e‚Ì“–‚½‚è”»’è‚ğs‚¤
-	void Judge();
+	void Check_Collision_BullettoCharacterObject();
 
 	//EnemyNumDensity‚ğ§Œä
 	void Controll_EnemyNumDensity();

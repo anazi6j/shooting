@@ -36,7 +36,8 @@ public:
 	//XV‚·‚é
 	void Update()override;
 	void DrawObject()override;
-	void Instantiate(double m_Angle, int m_x, int m_y);
+	void Instantiate(double m_Angle, double m_x, double m_y);
+
 };
 
 

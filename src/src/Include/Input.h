@@ -6,15 +6,15 @@ class Input
 	//一回押すとワンフレームだけtrueを返す関数
 	//押してる間trueを返す関数を作る
 protected:
-	int Frame;
-	char* input;
+	
 public:
 	
 	Input();
 	~Input();
 	//キーボード入力
-	static bool GetKeyDown(char*);
-	static bool GetKeepKeyPushing(char*);
+	static bool GetKeyPressed(char* input,const int key);
+	static bool GetKeyUp(const char* input, const int key);
+	static bool GetKeyDown(const char* input, const int key);
 
 };
 

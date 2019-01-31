@@ -38,7 +38,7 @@ void CannonArtilally::DevideAmmo_rapid(int rate)
 {
 	ammo_rapid %= rate;
 }
-void CannonArtilally::Instantiate(double m_Angle,int m_x,int m_y)
+void CannonArtilally::Instantiate(double m_Angle,double m_x,double m_y)
 {
 	Angle = m_Angle;
 	position.x = m_x;

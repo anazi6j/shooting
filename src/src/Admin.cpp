@@ -8,10 +8,8 @@
 #include "Include\Vector2D.h"
 #include "Include/HPRecoverObject.h"
 #include "Include/CannonArtilally.h"
-#include "Include/Collision.h"
+#include "Include/CircleCollision.h"
 #include <iostream>
-//アイテム関連
-//当たり判定がない
 
 UnitAdmin::UnitAdmin(char* m_key) :gameoverflag(false), gameclearflag(false), score(0), Density(EnemyNumDensity::Low),
 NumofRepeledEnemy(0), CurEnemyLimit(0)
@@ -50,8 +48,7 @@ NumofRepeledEnemy(0), CurEnemyLimit(0)
 //
 UnitAdmin::~UnitAdmin()
 {
-	
-	
+
 }
 //初期化（プレイヤーを生成する）
 void UnitAdmin::InitGame()
@@ -123,44 +120,44 @@ void UnitAdmin::DrawHitPoint()
 	}
 }
 
-//bulletとUnitの総当たり判定をして、結果をunitとbulletに返す
-//(Hit関数を呼び出す）
-void UnitAdmin::Judge()
+
+//bulletとCharcterObjectの当たり判定を総当たりする
+//
+void UnitAdmin::Check_Collision_BullettoCharacterObject()
 {
-	for ( int attackernum = 0;  attackernum <OBJECT_MAXNUM; attackernum++) {
+	
+     
+		//assert(attackernum,bulletnum,targetnum)
+
+		//for文
+		//ゲーム中に描画されている攻撃する側のオブジェクト、その弾、被弾する側のオブジェクトを取得
+		//取得した上で当たり判定
+	for (int attackernum = 0; attackernum < OBJECT_MAXNUM; attackernum++) {
 		if (Object[attackernum]->GetisActive()) {
+
 			for (int bulletnum = 0; bulletnum <MAX_AMMO; bulletnum++) {
+
 				if (Object[attackernum]->GetAmmo(bulletnum)->GetisActive()) {
 
 					for (int targetnum = 0; targetnum <OBJECT_MAXNUM; targetnum++) {
 						if (Object[targetnum]->GetisActive()) {
+			               //当たり判定
+							if (Object[attackernum]->GetTag()!= Object[targetnum]->GetTag()) {
 
-							if (Object[attackernum]->GetIsEnemy() != Object[targetnum]->GetIsEnemy()) {
-
-								double bullet_area = Object[attackernum]->GetAmmo(bulletnum)->GetHitZone();
-								
-								double target_area = Object[targetnum]->GetHitZone();
-
-
-								//弾と被弾するUnitとの距離よりこれらの半径の合計が大きく、タイプが飛行タイプなら被弾している事になる
-								
-								if(Collision::Circle_isCollide(Object[attackernum]->GetAmmo(bulletnum)->position,
-									Object[targetnum]->position,bullet_area,target_area)){
-									
+								if(CircleCollision::Circle_isCollide(
+									Object[attackernum]->GetAmmo(bulletnum)->GetCircleCollision(),
+									Object[targetnum]->GetCircleCollision())
+									)
+								{
 									Object[targetnum]->Hit(Object[attackernum]->GetAmmo(bulletnum));
 									Object[attackernum]->GetAmmo(bulletnum)->DestroyAmmo();
-									//タグが「Enemy」なら得点が入り
+									//被弾したオブジェクトのタグが「Enemy」なら得点が入る
 									if (Object[targetnum]->GetTag() == Tag::Enemy) {
-									score += 20;
-									NumofRepeledEnemy += 20;
-									
+									score += ADD_SCORE;
+									NumofRepeledEnemy += ADD_SCORE;
 									}
 								}
-
-
-								
 							}
-
 						}
 					}
 
@@ -172,16 +169,19 @@ void UnitAdmin::Judge()
 void UnitAdmin::Controll_EnemyNumDensity()
 {
 	/*Admin_EnemyNumDensity()*/
-	if (Get_NumOfRepeledEnemy() <= 100) {
+
+	//100=NUMOF_REPELEDENEMY_LOW
+	//300=NUMOF_REPELEDENEMY_HIGH
+	if (Get_NumOfRepeledEnemy() <= NUMOF_REPELEDENEMY_LOW) {
 		Set_EnemyNumDensity(EnemyNumDensity::Low);
 
 	}
-	else if (Get_NumOfRepeledEnemy() >= 100 && Get_NumOfRepeledEnemy() <= 300)
+	else if (Get_NumOfRepeledEnemy() >= NUMOF_REPELEDENEMY_LOW && Get_NumOfRepeledEnemy() <= NUMOF_REPELEDENEMY_HIGH)
 	{
 		Set_EnemyNumDensity(EnemyNumDensity::Middle);
 
 	}
-	else if (Get_NumOfRepeledEnemy() >= 300)
+	else if (Get_NumOfRepeledEnemy() >= NUMOF_REPELEDENEMY_HIGH)
 	{
 		Set_EnemyNumDensity(EnemyNumDensity::High);
 		Set_HIGHTension_ElapsedFrame(HIGHTENSION_ELAPSEDFRAME_MAX);
@@ -193,8 +193,6 @@ void UnitAdmin::Controll_EnemyNumDensity()
 		Set_HIGHTension_ElapsedFrame(FrameLeft);
 
 	}
-	/*ここまでSet_EnemyNumDensity*/
-
 
 	if (Get_HIGHTension_ElapsedFrame() < 1)
 	{
@@ -215,21 +213,17 @@ Vector2D UnitAdmin::GetClosetPosition(const GameObject& closet)
 	Vector2D returnpos= Vector2D(0,0);
 	double range = -1;
 
-	/*
-	double returnobj_x = closet.position.x;
-	double returnobj_y = closet.position.y;
-	*/
 	for (int i= 0; i< OBJECT_MAXNUM ; i++) {
 		if (Object[i]->GetisActive()) {
-			//returnoobjとi番目のObjectのisenemyフラグが一致しなかったら
-			if (closet.GetIsEnemy() != Object[i]->GetIsEnemy())
+			//タグが一致しなかったら
+			if (closet.GetTag() != Object[i]->GetTag())
 			{
-				//計算式を見やすくするためローカル変数を製作
-				double target_x = Object[i]->position.x;
-				double target_y = Object[i]->position.y;
-				//tmp_rangeにはtargetとreturnobjの距離が入る
-			   //double tmp_range = (target_x - returnobj_x)*(target_x - returnobj_x) + (target_y - returnobj_y)*(target_y - returnobj_y);
 				double tmp_range = Vector2D::Distance(Object[i]->position, closet.position);
+				
+				returnpos = Object[i]->position;
+				/*
+
+				
 				if (range != -1)
 				{
 					if (tmp_range < range) {
@@ -242,6 +236,7 @@ Vector2D UnitAdmin::GetClosetPosition(const GameObject& closet)
 					range = tmp_range;
 					returnpos = Object[i]->position;
 				}
+				*/
 			}
 		}
 	}
@@ -252,7 +247,6 @@ int UnitAdmin::GetEnemyNumDensity()
 {
 	switch (Density)
 	{
-
 	case EnemyNumDensity::Low:
 		return ENEMYDENSITY_LOW;
 		break;

@@ -1,15 +1,25 @@
 #pragma once
 //敵とプレイヤー、弾丸の基底クラス
 #include "Vector2D.h"
-
+#include "CircleCollision.h"
+#include <memory>
 
 
 using namespace std;
 class UnitAdmin;
+
+enum class Tag {
+	Player,
+	PlayerArtilally,
+	Enemy,
+};
+
  class GameObject
 {
-protected:
 	
+
+protected:
+	Tag tag;
 	bool isActive;//trueなら描画、falseなら描画しない
 	bool isInSight;//trueなら攻撃、falseなら攻撃しない
 
@@ -29,15 +39,17 @@ protected:
 	//なるからである
     
 	//当たり判定（円）
-	double hitzone;
-
+	CircleCollision collision;
 	
 public:
 	int GraphicHandle;//DXライブラリが画像を読み込む際のハンドル変数
 	Vector2D position;
 	
 	GameObject();
-	
+	virtual ~GameObject() {};
+	//派生元のクラスのポインタはUnitAdminオブジェクトを除いてスマートポインタであり、
+	//またUnitAdminオブジェクトもそれぞれのクラスで動的確保しているのではなく、
+	//UnitAdminクラスからthisポインタを渡してるため、要らないと思うが念のため
 	virtual void Update() = 0;
 
 	virtual void DrawObject();//描画
@@ -53,9 +65,9 @@ public:
 	
 	bool GetIsEnemy() const{ return isEnemy; }
 
-	double GetHitZone() const{ return hitzone; }
+	CircleCollision GetCircleCollision() const{ return collision; }
 
-	void SetHitzone(double value) { hitzone = value; }
+	void SetCollsion_radius(double value) { collision.radius = value; }
 
 	bool GetisInSight()const { return isInSight; }
 
@@ -63,7 +75,7 @@ public:
 
 	double GetDistance()const { return distance; }
 
-	
+	Tag GetTag()const { return tag; }
 
 
 	

@@ -8,7 +8,7 @@ Ammo::Ammo(int m_ammo_graphic_handle, bool m_isEnemy)
 	GraphicHandle = m_ammo_graphic_handle;
 
 
-	hitzone = HITDETECTIONZONE;
+	collision.radius = RADIUS;
 	damage = DAMAGE;
 	isEnemy = m_isEnemy;
 }
@@ -28,14 +28,15 @@ void Ammo::Shot(double m_x, double m_y, double m_angle)
 //’e‚ÌˆÚ“®‚Æ’e‚ÌÁ–Å
 void Ammo::Update()
 {
+	
 	//‹@‘Ì‚ÌŠp“x‚É‰‚¶‚Ä’e‚Ì•ûŒü‚ª•Ï‚í‚é
-	position.x = (position.x + cos(Angle)*AMMOVELOCITY);
-	position.y = (position.y +sin(Angle)*AMMOVELOCITY);
+	position.x += cos(Angle)*AMMOVELOCITY;
+	position.y += sin(Angle)*AMMOVELOCITY;
 	if (position.x < SCREEN_HEIGHT_MIN || SCREEN_HEIGHT_MAX < position.x
 		|| position.y < SCREEN_WIDTH_MIN || SCREEN_WIDTH_MAX < position.y) {
 		isActive = false;
 	}
-	
+	collision.position = position;
 }
 
 //’e‚ğÁ‚·

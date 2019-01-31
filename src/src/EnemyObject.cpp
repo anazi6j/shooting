@@ -5,14 +5,14 @@
 #include "Include\Define.h"
 #include <math.h>
 
-
 EnemyObject::EnemyObject(int m_unit_graphic_handle, int m_bullet_graphic_handle, UnitAdmin* m_Uadmin,EnemyType EType,Tag m_tag)
 	:DestroyedEnemyNum(0)
 {
 	GraphicHandle = m_unit_graphic_handle;
 	unit_admin = m_Uadmin;
 	Type = EType;
-	hitzone = HITDETECTIONZONE;
+	
+	collision.radius = RADIUS;
 	//“G‚©‚Ç‚¤‚©‚ðtrue‚É‚·‚é
 	isEnemy = true;
 	tag = m_tag;
@@ -21,6 +21,8 @@ EnemyObject::EnemyObject(int m_unit_graphic_handle, int m_bullet_graphic_handle,
 	{
 		ammo[i] = make_shared<Ammo>(m_bullet_graphic_handle,isEnemy);   
 	}
+
+
 	
 }
 
@@ -46,7 +48,7 @@ void EnemyObject::Instantiate(double m_x, double m_y, double m_angle)
 
 void EnemyObject::Update()
 {
-   
+	collision.position = position;
 	if (GetisActive())
 	{
 		

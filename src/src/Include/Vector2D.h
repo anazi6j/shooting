@@ -16,7 +16,7 @@ public:
 
 	//二点間のベクトルの距離を求める
 
-	static double Distance(const Vector2D& from, const Vector2D& to);
+	static double  Distance(const Vector2D& from, const Vector2D& to);
 
 	//ベクトルの内積を求める
 	static inline double Dot(const Vector2D& from,const Vector2D& to);
@@ -25,11 +25,14 @@ public:
 
 	static double Angle(const Vector2D& from, const Vector2D& to);
 
-	Vector2D forward() { set(0, 1); }
-	Vector2D Right() { set(1, 0); }
+	Vector2D forward() { return Vector2D(1,0); }
+	Vector2D Right() { return Vector2D(0,1); }
 
-	 Vector2D operator+(const Vector2D v);
-	bool operator==(const Vector2D& v)const;
+	 Vector2D operator+(const Vector2D& v)const;
+	 Vector2D operator-(const Vector2D& v)const;
+	 Vector2D operator*(double scalar)const;
+	 bool operator==(const Vector2D& v)const;
 	bool operator!=(const Vector2D& v)const;
+	
 };
 

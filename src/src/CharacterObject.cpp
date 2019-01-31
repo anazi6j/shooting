@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Include\Admin.h"
 #include "Include/Ammo.h"
+#include "Include/BarrierObject.h"
+#include "Include/CannonArtilally.h"
 //#include <memory>
 using namespace std;
 //íeÇ…îÌíeÇµÇΩéûÇÃèàóù
@@ -58,7 +60,7 @@ void CharacterObject::Draw()
 		{
 			ammo[i]->DrawObject();
 		}
-		
+	
 		
 	}
 }
@@ -77,8 +79,9 @@ void CharacterObject::DrawHealth()
 		{
 			Color = GetColor(0, 255, 0);
 		}
-
+		//HPÉoÅ[Çï`âÊ
 		DrawBox(static_cast<int>(position.x - 10), static_cast<int>(position.y - 20), static_cast<int>(position.x + 10), static_cast<int>(position.y - 17), GetColor(0, 0, 255), 0);
+		//HPÇï`âÊ
 		DrawBox(static_cast<int>(position.x - 10), static_cast<int>(position.y - 20), static_cast<int>(position.x - 10 + health / 5), static_cast<int>(position.y - 17), Color, 1);
 	}
 }

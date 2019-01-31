@@ -1,45 +1,20 @@
-#include "Include/Collision.h"
+#include "Include/CircleCollision.h"
 #include "Include/Vector2D.h"
+#include <math.h>
 
-
-Collision::Collision()
+CircleCollision::CircleCollision()
 {
 }
 
 
-Collision::~Collision()
+CircleCollision::~CircleCollision()
 {
 }
-bool Collision::Circle_isCollide(const Vector2D& bullet, const Vector2D& target,double HitzoneA,double HitzoneB)
+
+
+bool CircleCollision::Circle_isCollide(const CircleCollision& from, const CircleCollision& to)
 {
-	double bullet_x = bullet.x;
-	double bullet_y = bullet.y;
-	double bullet_area = HitzoneA;
-
-	double target_x = target.x;
-	double target_y = target.y;
-	double target_area = HitzoneB;
-
-
-
-	return ((bullet_x - target_x)* (bullet_x - target_x)) + ((bullet_y - target_y)*(bullet_y - target_y)) 
-		< 
-		(bullet_area + target_area)*(bullet_area + target_area);
-	
+	return Vector2D::Distance(from.position, to.position) < pow((from.radius + to.radius), 2);
 }
-
-/*
-                                 double bullet_x = Object[i]->GetAmmo(b)->position.x;
-								double bullet_y = Object[i]->GetAmmo(b)->position.y;
-								double bullet_area = Object[i]->GetAmmo(b)->GetHitZone();
-
-								double target_x = Object[t]->position.x;
-								double target_y = Object[t]->position.y;
-								double target_area = Object[t]->GetHitZone();
-
-
-								//弾と被弾するUnitとの距離よりこれらの半径の合計が大きく、タイプが飛行タイプなら被弾している事になる
-								if ((bullet_x - target_x)*(bullet_x - target_x) + (bullet_y - target_y)*(bullet_y - target_y)
-									< (bullet_area + target_area)*(bullet_area + target_area)) {*/
 
  

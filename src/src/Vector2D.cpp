@@ -21,11 +21,7 @@ void Vector2D::set(int _x, int _y)
 
 double Vector2D::Distance(const Vector2D& from, const Vector2D& to)
 {
-	double Disx = (from.x > to.x) ? (from.x - to.x)*(from.x - to.x) : (to.x-from.x)* (to.x - from.x);
-	double Disy = (from.y > to.y) ? (from.y - to.y)*(from.y - to.y) : (to.y - from.y)*(to.y - from.y);
-
-	return static_cast<int>(sqrt(Disx*Disy));
-
+	return (from - to).GetLength();
 }
 inline double Vector2D::Dot(const Vector2D& from ,const Vector2D& to)
 {
@@ -34,6 +30,7 @@ inline double Vector2D::Dot(const Vector2D& from ,const Vector2D& to)
 
 double Vector2D::Angle(const Vector2D& from, const Vector2D& to)
 {
+
 	double dot = Vector2D::Dot(from, to);
 
 	double Amag = (sqrt(from.GetLength()));
@@ -51,9 +48,17 @@ double Vector2D::GetLength()const
 	return x * x + y * y;
 }
 
-Vector2D Vector2D::operator+(const Vector2D v)
+Vector2D  Vector2D::operator+(const Vector2D& v)const
 {
 	return Vector2D(x + v.x, y + v.y);
+}
+Vector2D Vector2D::operator-(const Vector2D& v)const
+{
+	return Vector2D((x - v.x), (y - v.y));
+}
+Vector2D Vector2D::operator*(double scalar)const
+{
+	return Vector2D(x*scalar, y*scalar);
 }
 
 bool Vector2D::operator==(const Vector2D& v)const
@@ -65,3 +70,5 @@ bool Vector2D::operator!=(const Vector2D& v)const
 {
 	return x != v.x || y != v.y;
 }
+
+

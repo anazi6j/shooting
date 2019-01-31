@@ -14,7 +14,7 @@ public:
 	int GetDamage() { return damage; }
 
 	//弾が当たったオブジェクトを返す
-	CharacterObject* ReturnHitObject();
+	//CharacterObject* ReturnHitObject();
 	void DestroyAmmo();
 };
 

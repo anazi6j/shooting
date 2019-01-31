@@ -2,6 +2,7 @@
 #include "CharacterObject.h"
 #include "BarrierObject.h"
 #include "CannonArtilally.h"
+#include "CircleCollision.h"
 #include <memory>
 using namespace std;
 
@@ -11,13 +12,13 @@ private:
 	char* input;//キーの情報を受け取る
 	int invisibletime;//無敵フレーム
 	int CurOwnCannon;//使用できる砲台の所有数
+	int keyinputframe;
+	//キーを押しているフレーム数
+	shared_ptr<CannonArtilally>cannon[MAX_CANNON];
+	shared_ptr<BarrierObject>barrier;
+
 	
-protected:
 	
-	unique_ptr<BarrierObject> barrier;//unique_ptrに変える
-	unique_ptr<CannonArtilally> cannon[2];
-	
-	//unorderd_mapに変える？
 public:
 	
 	//(プレイヤーの画像ハンドル,弾の画像ハンドル,キーポインタ）
@@ -29,13 +30,21 @@ public:
 	void Instantiate(double, double, double);
 	
 	void Update();
+	//自機の移動処理
 	void Move()override;
+	//自機の攻撃処理
 	void Attack()override;
+	//砲台を生成
+	void InstantiateCannon();
+
+	//ゲッタ・セッタ関数
 	int Getinvisibletime()const { return invisibletime; }
-	void increaseinvisibletime() { invisibletime++; }
 	void Set_Artilally_Aimingpos(const Vector2D& pos);
 	int GetCannonOwn() { return CurOwnCannon; }
+	shared_ptr<BarrierObject> GetBarrier() { return barrier; }
+	shared_ptr<CannonArtilally> GetCannon(int i) { return cannon[i]; }
 	void IncreseCannonOwn() { CurOwnCannon++; }
+
 	
 };
 

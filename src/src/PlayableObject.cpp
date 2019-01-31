@@ -5,43 +5,56 @@
 #include "Include\BarrierObject.h"
 #include "Include/CannonArtilally.h"
 #include <iostream>
-PlayableObject::PlayableObject(int m_chara_graphic_handle, int m_ammo_graphic_handle, 
-	int m_barrier_graphic_handle,int m_cannon_graphic_handle,char m_input[256], UnitAdmin* m_Uadmin,Tag m_tag)
-	:input(m_input),invisibletime(0),CurOwnCannon(2)
+#include <cassert>
+#include "Include/Input.h"
+PlayableObject::PlayableObject(int m_chara_graphic_handle, int m_ammo_graphic_handle,
+	int m_barrier_graphic_handle, int m_cannon_graphic_handle, char m_input[256], UnitAdmin* m_Uadmin, Tag m_tag)
+	:input(m_input), invisibletime(0), CurOwnCannon(2), keyinputframe(0)
 {
 	input = m_input;
 	GraphicHandle = m_chara_graphic_handle;
+	
 	//当たり判定の設定
-	hitzone = HITDETECTIONZONE;
+	collision.radius = RADIUS;
 	//「敵かどうか」をfalseにする
 	isEnemy = false;
 	for (int i = 0; i < MAX_AMMO; i++)
 	{
+		
 		try {
 			ammo[i] = make_unique<Ammo>(m_ammo_graphic_handle, !isEnemy);
 		}
 		catch (bad_alloc)
 		{
-			cout << "弾の領域確保に失敗しました。メモリが足らない可能性があります";
+			cout << "弾オブジェクトの領域確保に失敗しました。メモリが足りない可能性があります";
 		}
 	}
-	
-	for (int j = 0; j < 2; j++)
+
+	for (int j = 0; j < MAX_CANNON; j++)
 	{
-		cannon[j] = make_unique<CannonArtilally>(m_cannon_graphic_handle, m_ammo_graphic_handle,!isEnemy);
+		
+		try {
+			cannon[j] = make_shared<CannonArtilally>(m_cannon_graphic_handle, m_ammo_graphic_handle, !isEnemy);
+		}
+		catch (bad_alloc)
+		{
+			cout << "砲台オブジェクトの領域確保に失敗しました。メモリが足りない可能性があります";
+		}
+
+		try {
+			barrier = make_shared<BarrierObject>(m_barrier_graphic_handle);
+		}
+		catch (bad_alloc)
+		{
+			cout << "バリアオブジェクトの領域確保に失敗しました。メモリが足りない可能性があります";
+		}
+		health = 10000;
+		tag = m_tag;
 	}
-	barrier = make_unique<BarrierObject>(m_barrier_graphic_handle);
-	
-	health = 10000;
-	tag = m_tag;
 }
 
-
-PlayableObject::~PlayableObject()
-{
-	
-	
-}
+	PlayableObject::~PlayableObject()
+	{}
 
 //プレイヤーを出現させる
 void PlayableObject::Instantiate(double m_xpos, double m_ypos, double m_angle)
@@ -53,38 +66,35 @@ void PlayableObject::Instantiate(double m_xpos, double m_ypos, double m_angle)
 }
 void PlayableObject::Update()
 {
-	
+	collision.position = position;
 	for (int i = 0; i < MAX_AMMO; i++)
 	{
 		ammo[i]->Update();
 	}
 
-	for (int j = 0; j < 2; j++)
+	
+	for (int j = 0; j < MAX_CANNON; j++)
 	{
-		cannon[j]->Update();
+		cannon[j]->DrawObject();
 	}
 	
-	/*Move()*/
-	Move();
 	
-	/*Attack()*/
+	Move();
 	Attack();
-
+	InstantiateCannon();
 	/*SetBarrier*/
-	if (input[KEY_INPUT_B]==1) {
-
+	if (Input::GetKeyPressed(input, KEY_INPUT_B)) {
 		barrier->SetActive(true);
 		barrier->DrawObject();
-		barrier->SetBarrierPos(static_cast<int>(position.x), static_cast<int>(position.y));
-		Barrierisenabled = true;
+		barrier->SetBarrierPos(position.x, position.y);
 	}
-
 }
 
 void PlayableObject::Move()
 {
-
-	if (input[KEY_INPUT_UP] == 1)
+	//assertを入れる（xとyの位置に制限を掛ける）
+	//clamp関数を作り制限をかける
+	if (Input::GetKeyPressed(input,KEY_INPUT_UP))
 	{
 		if (position.y > 0)
 		{
@@ -93,23 +103,24 @@ void PlayableObject::Move()
 		}
 	}
 
-	if (input[KEY_INPUT_DOWN] == 1)
+	if (Input::GetKeyPressed(input, KEY_INPUT_DOWN))
 	{
 		if (position.y < SCREEN_WIDTH_MAX)
 		{
 			position.y += 5;
-			//posY += 5;
+			
 		}
 	}
 
-	if (input[KEY_INPUT_LEFT] == 1) {
+	if (Input::GetKeyPressed(input,KEY_INPUT_LEFT))
+	{
 		if (position.x > 0) {
 
 			position.x -= 5;
 		}
 	}
 
-	if (input[KEY_INPUT_RIGHT] == 1)
+	if (Input::GetKeyPressed(input,KEY_INPUT_RIGHT))
 	{
 		if (position.x < SCREEN_WIDTH_MAX)
 		{
@@ -121,19 +132,37 @@ void PlayableObject::Move()
 
 void PlayableObject::Attack()
 {
-	if (input[KEY_INPUT_Z] == 1)
+	
+	if(Input::GetKeyPressed(input,KEY_INPUT_Z))
 	{
-
+		
 		//rapidの値がRAPID_SPEED以上になったら発射
-		rapid++;
-		rapid %= RAPID_RATE;
-		if (rapid == 1) {
-			for (int i = 0; i < MAX_AMMO; i++)//zキーを押すと、まだ発射していない弾を探して、shot関数に現在の座標を与える
-			{
-				if (!ammo[i]->GetisActive()) {//発射していない弾があったら(i番目の弾の「画像を表示している」がfalseだったら
-					ammo[i]->Shot(position.x, position.y, Angle);//弾を発射
-					break;
+		 
+			rapid++;
+			rapid %= RAPID_RATE;
+			if (rapid == 1) {
+				for (int i = 0; i < MAX_AMMO; i++)//zキーを押すと、まだ発射していない弾を探して、shot関数に現在の座標を与える
+				{
+					if (!ammo[i]->GetisActive()) {//発射していない弾があったら(i番目の弾の「画像を表示している」がfalseだったら
+						ammo[i]->Shot(position.x, position.y, Angle);//弾を発射
+						break;
+					}
 				}
+			}
+		
+	}
+}
+
+void PlayableObject::InstantiateCannon()
+{
+	if (Input::GetKeyDown(input, KEY_INPUT_SPACE))
+	{
+		if (CurOwnCannon >= 0) {
+			for (int i = 0; i < MAX_CANNON; i++)
+			{
+				if(!cannon[i]->GetisActive())
+				cannon[i]->Instantiate(Angle, position.x, position.y -PLAYER_FORWARDPOS_Y);
+				
 			}
 		}
 	}
@@ -141,8 +170,10 @@ void PlayableObject::Attack()
 
 void PlayableObject::Set_Artilally_Aimingpos(const Vector2D& pos)
 {
-	for (int j = 0; j < 2; j++)
+	for (int j = 0; j < MAX_CANNON; j++)
 	{
 		cannon[j]->SetArtilally_AimingPos(pos);
 	}
 }
+
+//barrier、cannon共にdrawobjectが直接書かれてないと描画されない
