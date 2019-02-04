@@ -2,19 +2,35 @@
 #include "Include\Define.h"
 #include "DxLib.h"
 #include <iostream>
-#include "Include\UnitAdmin.h"
+#include "Include\Admin.h"
 #include "Include/Ammo.h"
+#include "Include/BarrierObject.h"
+#include "Include/CannonArtilally.h"
 //#include <memory>
 using namespace std;
 //弾に被弾した時の処理
+
+
 CharacterObject::CharacterObject()
 {
-	
+	EnemyCount = 0;
+	Barrierisenabled = false;
+	Ammo_rapid = 0;
+	tag = Tag::Player;
+}
+void CharacterObject::IncreaseAmmo_rapid()
+{
+	Ammo_rapid++;
+}
+
+void CharacterObject::DevideAmmo_rapid(int rate)
+{
+	Ammo_rapid %= rate;
 }
 
 void CharacterObject::Hit(shared_ptr<Ammo> ammo)
 {
-	if (this->tag == Tag::Player) {
+	if (tag == Tag::Player) {
 		if (Barrierisenabled)
 		{
 			return;
@@ -27,12 +43,8 @@ void CharacterObject::Hit(shared_ptr<Ammo> ammo)
 	
 	health -= ammo->GetDamage();
 	
-	//弾が当たったオブジェクトの列挙子を返す。
 	if (health < 0) {
 		isActive = false;
-		
-
-		
 	}
 }
 //キャラクターの描画を行う
@@ -42,13 +54,13 @@ void CharacterObject::Draw()
 	if (GetisActive())
 	{
 		//その画像を表示
-		DrawRotaGraph(position.x, position.y, 1.0, Angle + PI / 2, GraphicHandle,1.0);
+		DrawRotaGraph(static_cast<int>(position.x), static_cast<int>(position.y), 1.0, Angle + PI / 2, GraphicHandle, static_cast < int>(1));
 		//弾を最大50発分描画する（
 		for (int i = 0; i < MAX_AMMO; i++)
 		{
 			ammo[i]->DrawObject();
 		}
-		
+	
 		
 	}
 }
@@ -58,7 +70,7 @@ void CharacterObject::DrawHealth()
 	if (isActive)
 	{
 		int Color;
-		if (isEnemy)
+		if (tag ==Tag::Enemy)
 		{
 			Color = GetColor(255, 0, 0);
 			//GetColor関数でRGBを取得する
@@ -67,35 +79,9 @@ void CharacterObject::DrawHealth()
 		{
 			Color = GetColor(0, 255, 0);
 		}
-
-		DrawBox(position.x - 10, position.y - 20, position.x + 10, position.y - 17, GetColor(0, 0, 255), 0);
-		DrawBox(position.x - 10, position.y - 20, position.x - 10 + health / 5, position.y - 17, Color, 1);
+		//HPバーを描画
+		DrawBox(static_cast<int>(position.x - 10), static_cast<int>(position.y - 20), static_cast<int>(position.x + 10), static_cast<int>(position.y - 17), GetColor(0, 0, 255), 0);
+		//HPを描画
+		DrawBox(static_cast<int>(position.x - 10), static_cast<int>(position.y - 20), static_cast<int>(position.x - 10 + health / 5), static_cast<int>(position.y - 17), Color, 1);
 	}
 }
-
-/*
-inline double CharacterObject::Dot(const CharacterObject* a, const CharacterObject* b)
-{
-	return a->posX*b->posX + a->posY*b->posY;
-}
-
-double CharacterObject::GetAngle(const CharacterObject* a, const CharacterObject* b)
-{
-	double dot = CharacterObject::Dot(a, b);
-	double Amag = sqrt(a->posX*a->posX + a->posY*a->posY);//aの大きさを求める
-	double Bmag = sqrt(b->posX*b->posX + b->posY*b->posY);//bの大きさを求める
-	double cos = dot / (Amag*Bmag);//cosθを求める
-	double radian = acos(cos);//cosθのラジアンを求める
-	double degree = radian * RAD_TO_DEG;
-
-	return degree;
-}
-
-double CharacterObject::Distance( const CharacterObject* a,  const CharacterObject* b)
-{
-	float Disx = (a->posX > b->posX) ? (a->posX - b->posX)*(a->posX - b->posX) : (b->posX - a->posX)*(b->posX - a->posX);
-	float Disy = (a->posY > b->posY) ? (a->posY - b->posY)*(a->posY - b->posY) : (b->posY - a->posY)*(b->posY - a->posY);
-
-	return sqrt(Disx*Disy);
-}
-*/

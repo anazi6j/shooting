@@ -31,7 +31,7 @@ void ItemBase::DrawItem()
 {
 	if (GetActive())
 	{
-		DrawRotaGraph(position.x, position.y, 1.0, Angle + PI / 2, graphicHandle, 1, 0);
+		DrawRotaGraph(static_cast<int>(position.x), static_cast<int>(position.y), 1.0, Angle + PI / 2, graphicHandle, 1, 0);
 	}
 }
 //アイテムがスクリーンの外にあるかどうかチェックする

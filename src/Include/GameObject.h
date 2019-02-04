@@ -1,19 +1,25 @@
 #pragma once
 //敵とプレイヤー、弾丸の基底クラス
 #include "Vector2D.h"
+#include "CircleCollision.h"
+#include <memory>
 
 
 using namespace std;
 class UnitAdmin;
+
 enum class Tag {
 	Player,
 	PlayerArtilally,
 	Enemy,
 };
-class GameObject
+
+ class GameObject
 {
-protected:
 	
+
+protected:
+	Tag tag;
 	bool isActive;//trueなら描画、falseなら描画しない
 	bool isInSight;//trueなら攻撃、falseなら攻撃しない
 
@@ -24,42 +30,51 @@ protected:
 	double Angle;
 	
 
-	bool isEnemy;//自機だったらfalse,敵はtrue
-	             //立っているフラグが違うオブジェクト同士
-	             //に対して攻撃が有効になる
 	
-	UnitAdmin* unit_admin;
+	
+	UnitAdmin* unit_admin;//なぜ生ポインタを使ってるのかというと、
+	///UnitAdminクラス側からこのクラスを継承したクラスオブジェクトをインスタンス化する際、UnitAdminのthisポインタが必要に
+	//なるからである
     
 	//当たり判定（円）
-	double hitzone;
-
+	CircleCollision collision;
 	
 public:
 	int GraphicHandle;//DXライブラリが画像を読み込む際のハンドル変数
 	Vector2D position;
-	Tag tag;
-	GameObject();//インスタンス化した時に自動で呼ばれる
 	
+	GameObject();
+	virtual ~GameObject() {};
+	//派生元のクラスのポインタはUnitAdminオブジェクトを除いてスマートポインタであり、
+	//またUnitAdminオブジェクトもそれぞれのクラスで動的確保しているのではなく、
+	//UnitAdminクラスからthisポインタを渡してるため、要らないと思うが念のため
 	virtual void Update() = 0;
+
+	virtual void DrawObject();//描画
+
+
 	//各ゲームオブジェクト（敵、自機、弾丸）のUpdateに実装する。
 	//ここでは実装しない
-	/*ゲッタ関数*/
-	bool GetisActive()const { return isActive; }
 	
+
+	//以下ゲッタ・セッタ関数
+	bool GetisActive()const { return isActive; }
 	double GetAngle()const { return Angle; }
 	
-	bool GetIsEnemy() const{ return isEnemy; }
-	double GetHitZone() { return hitzone; }
-	void SetHitzone(double value) { hitzone = value; }
-	virtual void DrawObject();//描画
-	double GetPosX()const { return position.x; }
-	double GetPosY()const { return position.y; }
-	bool GetisInSight()const { return isInSight; }
-	void SetActive(bool isactive) { isActive = isactive; }
-	double GetDistance() { return distance; }
-	double GetAngle() { return Angle; }
+	
 
-	inline double GetLength();//長さ
+	CircleCollision GetCircleCollision() const{ return collision; }
+
+	void SetCollsion_radius(double value) { collision.radius = value; }
+
+	bool GetisInSight()const { return isInSight; }
+
+	void SetActive(bool isactive) { isActive = isactive; }
+
+	double GetDistance()const { return distance; }
+
+	Tag GetTag()const { return tag; }
+
 
 	
 };

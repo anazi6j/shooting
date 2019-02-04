@@ -2,30 +2,27 @@
 #include "DxLib.h"
 #include "Include\Define.h"
 #include <math.h>
-#include "Include/UnitAdmin.h"
+#include "Include/Admin.h"
 
 
-GameObject::GameObject():isActive(false)
+GameObject::GameObject() :isActive(false)
 {
-}
+	
+	Angle = 0;
+	isInSight = false;
 
-//GameObject‚Ì•`‰æ‚ð‚·‚é
-//
+}
 
 void GameObject::DrawObject()
 {
+	
 	if (isActive)
 	{
-		
-		DrawRotaGraph(position.x, position.y, 1.0, Angle + PI / 2, GraphicHandle, 1, 0);
+		DrawRotaGraph(static_cast<int>(position.x), static_cast<int>(position.y), 1.0, Angle + PI / 2, GraphicHandle, 1, 0);
 	}
+	
 }
 
-inline double GameObject::GetLength()
-{
-	
-	//return posX * posX + posY * posY;
-}
 
 
 
