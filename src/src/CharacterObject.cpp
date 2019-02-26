@@ -2,7 +2,7 @@
 #include "Include\Define.h"
 #include "DxLib.h"
 #include <iostream>
-#include "Include\Admin.h"
+#include "Include\ObjectAdmin.h"
 #include "Include/Ammo.h"
 #include "Include/BarrierObject.h"
 #include "Include/CannonArtilally.h"
@@ -70,7 +70,7 @@ void CharacterObject::DrawHealth()
 	if (isActive)
 	{
 		int Color;
-		if (isEnemy)
+		if (tag ==Tag::Enemy)
 		{
 			Color = GetColor(255, 0, 0);
 			//GetColorŠÖ”‚ÅRGB‚ğæ“¾‚·‚é

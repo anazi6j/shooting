@@ -1,21 +1,22 @@
 #include "include/CannonArtilally.h"
 #include "Include/Vector2D.h"
-#include "Include/Admin.h"
+#include "Include/ObjectAdmin.h"
 #include "Include/Define.h"
 #include "Include/Ammo.h"
 #include <iostream>
 #include "DxLib.h"
-CannonArtilally::CannonArtilally(int m_ghandle, int m_bullet_graphic_handle,bool m_isEnemy)
+CannonArtilally::CannonArtilally(int m_ghandle, int m_bullet_graphic_handle, ObjectAdmin* m_admin,Tag m_tag)
 {
-	ThereisEnemy_Hit = false;
+	
 	ammo_rapid = 0;
 	//“G‚ðŽæ“¾‚·‚é
 	GraphicHandle = m_ghandle;
-	isEnemy = m_isEnemy;
+	tag = m_tag;
+	unit_admin = m_admin;
 	for (int i = 0; i < MAX_AMMO; i++)
 	{
 		try {
-			ammo[i] = make_unique<Ammo>(m_bullet_graphic_handle, !isEnemy);
+			ammo[i] = make_unique<Ammo>(m_bullet_graphic_handle, m_tag);
 		}
 		catch (const std::bad_alloc& error)
 		{
@@ -55,11 +56,11 @@ void CannonArtilally::Update()
 	}
 
 	//’e‚É“–‚½‚Á‚½“G‚ª‚¢‚È‚¢‚È‚ç(ThereisEnemyHit‚ªfalsejVector2D(0,0)‚ð•Ô‚·
-	Vector2D target_position = TargetPos;
+	Vector2D target_position = unit_admin->GetCannon_TargetPos();
 
 	if (target_position != Vector2D(0, 0))
 	{
-		Angle =atan2(target_position.x,target_position.y);
+		Angle =atan2(target_position.y-this->position.y,target_position.x-this->position.x);
 	}
 
 	IncreaseAmmo_rapid();

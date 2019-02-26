@@ -1,5 +1,5 @@
 #pragma once
-#include "Include/Admin.h"
+#include "Include/ObjectAdmin.h"
 #include "Include/ItemBase.h"
 class HPRecoverObject:public ItemBase
 {

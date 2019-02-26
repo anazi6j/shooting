@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
-#include "Include/Admin.h"
+#include "Include/ObjectAdmin.h"
+#include "Menu.h"
 class Maintask
 {
 
@@ -14,15 +15,16 @@ class Maintask
 public:
 	Maintask();
 	~Maintask();
-	unique_ptr<UnitAdmin> unit_admin;
-
+	unique_ptr<ObjectAdmin> unit_admin;
+	unique_ptr<Menu>menu;
 	void Update();
 	char* Getkey() { return key; }
-	
+	bool GetQuitGame() { return quitgame; }
 private:
 	char key[256];
 	int bg1Handle;
 	int bg2Handle;
 	int BG_count;
+	bool quitgame;
 };
 

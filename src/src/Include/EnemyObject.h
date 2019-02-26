@@ -16,8 +16,8 @@ private:
 	int DestroyedEnemyNum;
 	
 public:
-	//グラフィック、弾、ゲームオブジェクトの管理ポインタ、敵のタイプを代入
-	EnemyObject(int m_unit_graphic_handle, int m_bullet_graphic_handle, UnitAdmin* m_Uadmin,EnemyType EType,Tag m_tag);
+	
+	EnemyObject(int m_object_graphic_handle, int m_bullet_graphic_handle, ObjectAdmin* m_Oadmin,EnemyType EType,Tag m_tag);
 	
 	~EnemyObject();
 	void Instantiate(double, double, double)override;

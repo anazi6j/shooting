@@ -1,11 +1,23 @@
 #pragma once
 
+
+
 //円周率
 const double PI = 3.141592;
 //生成可能なcannonItemの数
 const int CANNON_MAXNUM = 2;
 //生成可能なObjectの数
 const int OBJECT_MAXNUM = 256;
+//プレイヤーの要素番号
+const int PLAYEABLEOB_NUM = 0;
+//敵オブジェクトの始まりの番号
+const int ENEMYOB_START = 1;
+
+//プレイヤーのライフ
+const int PLAYABLEOB_HEALTH = 5000;
+
+//敵のライフ
+const int ENEMYOB_HEALTH = 2;
 //弾のダメージ
 const int DAMAGE = 1;
 //敵に弾を当てた時のスコア

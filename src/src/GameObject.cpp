@@ -2,12 +2,12 @@
 #include "DxLib.h"
 #include "Include\Define.h"
 #include <math.h>
-#include "Include/Admin.h"
+#include "Include/ObjectAdmin.h"
 
 
 GameObject::GameObject() :isActive(false)
 {
-	isEnemy = false;
+	
 	Angle = 0;
 	isInSight = false;
 

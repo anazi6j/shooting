@@ -1,4 +1,6 @@
 #pragma once
+
+
 class Vector2D
 {
 public:
@@ -24,6 +26,10 @@ public:
 	//二点間のベクトルの角度を求める
 
 	static double Angle(const Vector2D& from, const Vector2D& to);
+
+	
+
+	
 
 	Vector2D forward() { return Vector2D(1,0); }
 	Vector2D Right() { return Vector2D(0,1); }

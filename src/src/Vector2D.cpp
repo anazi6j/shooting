@@ -43,6 +43,7 @@ double Vector2D::Angle(const Vector2D& from, const Vector2D& to)
 	
 }
 
+
 double Vector2D::GetLength()const
 {
 	return x * x + y * y;

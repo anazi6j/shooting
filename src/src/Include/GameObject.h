@@ -6,7 +6,7 @@
 
 
 using namespace std;
-class UnitAdmin;
+class ObjectAdmin;
 
 enum class Tag {
 	Player,
@@ -30,11 +30,9 @@ protected:
 	double Angle;
 	
 
-	bool isEnemy;//自機だったらfalse,敵はtrue
-	             //立っているフラグが違うオブジェクト同士
-	             //に対して攻撃が有効になる
 	
-	UnitAdmin* unit_admin;//なぜ生ポインタを使ってるのかというと、
+	
+	ObjectAdmin* unit_admin;//なぜ生ポインタを使ってるのかというと、
 	///UnitAdminクラス側からこのクラスを継承したクラスオブジェクトをインスタンス化する際、UnitAdminのthisポインタが必要に
 	//なるからである
     
@@ -63,7 +61,7 @@ public:
 	bool GetisActive()const { return isActive; }
 	double GetAngle()const { return Angle; }
 	
-	bool GetIsEnemy() const{ return isEnemy; }
+	
 
 	CircleCollision GetCircleCollision() const{ return collision; }
 

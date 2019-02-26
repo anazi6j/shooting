@@ -25,7 +25,7 @@ public:
 
 	 PlayableObject(int m_chara_graphic_handle, int m_ammo_graphic_handle,
 		 int m_barrier_graphic_handle,int m_cannon_graphic_handle, char m_input[256], 
-		 UnitAdmin* m_Uadmin,Tag tag);
+		 ObjectAdmin* m_Uadmin,Tag tag);
 	~PlayableObject();
 	void Instantiate(double, double, double);
 	
@@ -39,7 +39,7 @@ public:
 
 	//ゲッタ・セッタ関数
 	int Getinvisibletime()const { return invisibletime; }
-	void Set_Artilally_Aimingpos(const Vector2D& pos);
+	
 	int GetCannonOwn() { return CurOwnCannon; }
 	shared_ptr<BarrierObject> GetBarrier() { return barrier; }
 	shared_ptr<CannonArtilally> GetCannon(int i) { return cannon[i]; }

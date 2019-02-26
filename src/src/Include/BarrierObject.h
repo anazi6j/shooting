@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Admin.h"
+#include "ObjectAdmin.h"
 class Ammo;
 using namespace std;
 

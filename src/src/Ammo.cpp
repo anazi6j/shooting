@@ -3,14 +3,14 @@
 #include "Include\Define.h"
 #include "Include\CharacterObject.h"
 //Ammoオブジェクトにグラフィック、あたり判定、攻撃力、弾を発射した機体が敵か味方かを代入
-Ammo::Ammo(int m_ammo_graphic_handle, bool m_isEnemy)
+Ammo::Ammo(int m_ammo_graphic_handle, Tag m_tag)
 {
 	GraphicHandle = m_ammo_graphic_handle;
 
 
 	collision.radius = RADIUS;
 	damage = DAMAGE;
-	isEnemy = m_isEnemy;
+	tag = m_tag;
 }
 
 //弾を撃つ

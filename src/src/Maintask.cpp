@@ -1,12 +1,13 @@
 #include "Include/Maintask.h"
-
+#include "Include/Menu.h"
 #include "DxLib.h"
 #include "Include/Input.h"
 using namespace std;
 
 Maintask::Maintask()
 {
-	unit_admin = make_unique<UnitAdmin>(key);
+	unit_admin = make_unique<ObjectAdmin>(key);
+	menu = make_unique<Menu>(key);
 	bg1Handle = LoadGraph("Image\\Title.png");
 	bg2Handle = LoadGraph("Image\\CLEAR.png");
 	int count = 0;
@@ -24,7 +25,7 @@ void Maintask::Update()
 	case STATUS::TITLE:
 		DrawGraph(0, 0, bg1Handle, 0);
 		
-		if(Input::GetKeyDown(key,KEY_INPUT_Z)){
+		if(Input::GetKeyDown(Getkey(),KEY_INPUT_Z)){
 			unit_admin->InitGame();
 			status = STATUS::GAME;
 		}
@@ -36,8 +37,8 @@ void Maintask::Update()
 		unit_admin->Check_Collision_BullettoCharacterObject();
 
 		unit_admin->Update();
-		unit_admin->Draw();
-		unit_admin->DrawHitPoint();
+		//unit_admin->Draw();
+		
 		if (unit_admin->GetGameoverFlag()) {
 			status = STATUS::RESULT;
 		}
